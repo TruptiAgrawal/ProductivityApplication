@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pupu's Little Study Corner 🌿</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --warm-white: #fdf9f3;
+    --sage: #8aab7a;
+    --sage-light: #b5cfa8;
+    --sage-dark: #5a8050;
+    --moss: #6b8f5e;
+    --tan: #c8a87a;
+    --tan-light: #e8d5b7;
+    --tan-dark: #9a7a50;
+    --brown: #7a5c3a;
+    --blush: #f0c8b0;
+    --soft-red: #e87a6a;
+    --yellow: #f5d87a;
+    --text: #4a3828;
+    --text-light: #7a6858;
+    --border: #d5c8b0;
+    --shadow: rgba(100, 80, 50, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--cream);
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(138, 171, 122, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(200, 168, 122, 0.12) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='%238aab7a' opacity='0.15'/%3E%3C/svg%3E");
+    min-height: 100vh;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 36px;
+    background: var(--warm-white);
+    border-bottom: 2px dashed var(--border);
+    position: relative;
+  }
+  .header-title {
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--sage-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header-title span { font-size: 22px; }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--sage);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 22px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 0 var(--sage-dark);
+  }
+  .nav-link:hover { transform: translateY(-2px); box-shadow: 0 5px 0 var(--sage-dark); }
+  .nav-link:active { transform: translateY(1px); box-shadow: 0 2px 0 var(--sage-dark); }
+
+  /* ── MAIN LAYOUT ── */
+  .main-container {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 28px;
+    max-width: 1100px;
+    margin: 32px auto;
+    padding: 0 28px 60px;
+  }
+
+  /* ── CARD BASE ── */
+  .card {
+    background: var(--warm-white);
+    border-radius: 24px;
+    border: 2px solid var(--border);
+    box-shadow: 0 4px 0 var(--tan-light), 0 8px 24px var(--shadow);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, var(--sage-light) 0, var(--sage-light) 10px, transparent 10px, transparent 18px);
+    border-radius: 24px 24px 0 0;
+  }
+  .card-title {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--sage-dark);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ── POMODORO ── */
+  .pomodoro-card {
+    grid-column: 1;
+    text-align: center;
+  }
+
+  /* Mode tabs */
+  .mode-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 26px;
+  }
+  .mode-tab {
+    padding: 8px 20px;
+    border-radius: 50px;
+    border: 2px solid var(--border);
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mode-tab.active {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: white;
+    box-shadow: 0 3px 0 var(--sage-dark);
+  }
+  .mode-tab:hover:not(.active) { border-color: var(--sage-light); background: var(--sage-light); color: white; }
+
+  /* Timer circle */
+  .timer-wrapper {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    margin: 0 auto 28px;
+  }
+  .timer-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .timer-track { fill: none; stroke: var(--tan-light); stroke-width: 10; }
+  .timer-progress {
+    fill: none;
+    stroke: var(--sage);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 659;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear, stroke 0.4s;
+  }
+  .timer-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .timer-mascot { font-size: 44px; line-height: 1; margin-bottom: 2px; }
+  .timer-display {
+    font-family: 'Caveat', cursive;
+    font-size: 46px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+  .timer-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* Controls */
+  .timer-controls { display: flex; gap: 14px; justify-content: center; margin-bottom: 20px; }
+  .btn-primary {
+    background: var(--sage);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 36px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--sage-dark);
+    transition: all 0.15s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--sage-dark); }
+  .btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--sage-dark); }
+  .btn-primary.paused { background: var(--tan); box-shadow: 0 4px 0 var(--tan-dark); }
+  .btn-primary.paused:hover { box-shadow: 0 6px 0 var(--tan-dark); }
+  .btn-secondary {
+    background: var(--cream);
+    color: var(--text);
+    border: 2px solid var(--border);
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-secondary:hover { background: var(--tan-light); }
+
+  /* Session dots */
+  .session-dots { display: flex; gap: 8px; justify-content: center; }
+  .dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--cream);
+    transition: all 0.3s;
+  }
+  .dot.filled { background: var(--sage); border-color: var(--sage); }
+  .dot.long { background: var(--tan); border-color: var(--tan); }
+
+  /* Pomodoro settings row */
+  .pomo-settings {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+  .pomo-set-item { text-align: center; }
+  .pomo-set-label { font-size: 11px; color: var(--text-light); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .pomo-set-controls { display: flex; align-items: center; gap: 8px; }
+  .pomo-set-btn {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--cream);
+    cursor: pointer;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .pomo-set-btn:hover { background: var(--sage-light); border-color: var(--sage-light); color: white; }
+  .pomo-set-val { font-weight: 800; font-size: 16px; min-width: 28px; text-align: center; }
+
+  /* Decorative doodles */
+  .doodle {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.55;
+    font-size: 22px;
+  }
+
+  /* ── TODO ── */
+  .todo-card { grid-column: 2; grid-row: 1; }
+
+  .todo-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .todo-input {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 50px;
+    border: 2px solid var(--border);
+    background: var(--cream);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .todo-input:focus { border-color: var(--sage); }
+  .todo-input::placeholder { color: var(--text-light); }
+  .add-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--sage);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 var(--sage-dark);
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .add-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--sage-dark); }
+  .add-btn:active { transform: translateY(1px); box-shadow: 0 2px 0 var(--sage-dark); }
+
+  .todo-list { display: flex; flex-direction: column; gap: 8px; max-height: 380px; overflow-y: auto; }
+  .todo-list::-webkit-scrollbar { width: 6px; }
+  .todo-list::-webkit-scrollbar-track { background: var(--cream); border-radius: 10px; }
+  .todo-list::-webkit-scrollbar-thumb { background: var(--sage-light); border-radius: 10px; }
+
+  .todo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--cream);
+    border-radius: 14px;
+    border: 2px solid var(--border);
+    transition: all 0.2s;
+    animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+  .todo-item:hover { border-color: var(--sage-light); }
+  .todo-check {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2.5px solid var(--border);
+    background: white;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    font-size: 12px;
+  }
+  .todo-item.done .todo-check { background: var(--sage); border-color: var(--sage); }
+  .todo-item.done .todo-check::after { content: '✓'; color: white; }
+  .todo-text {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .todo-item.done .todo-text { text-decoration: line-through; color: var(--text-light); }
+  .todo-del {
+    opacity: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--soft-red);
+    font-size: 16px;
+    transition: opacity 0.2s;
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+  .todo-item:hover .todo-del { opacity: 1; }
+
+  .todo-stats {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-light);
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 4px 0;
+    border-top: 1.5px dashed var(--border);
+  }
+  .clear-done {
+    background: none;
+    border: none;
+    color: var(--sage);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: color 0.2s;
+  }
+  .clear-done:hover { color: var(--sage-dark); }
+
+  /* ── FOOTER MASCOT STRIP ── */
+  .mascot-strip {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--warm-white);
+    border-top: 2px dashed var(--border);
+    padding: 8px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-light);
+    font-weight: 600;
+    z-index: 100;
+  }
+  .mascot-strip .mascots { font-size: 24px; letter-spacing: 4px; }
+  .status-msg { font-family: 'Caveat', cursive; font-size: 17px; color: var(--sage-dark); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    top: 80px; left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: var(--sage);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s ease;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 740px) {
+    .main-container { grid-template-columns: 1fr; padding: 0 16px 80px; }
+    .todo-card { grid-column: 1; grid-row: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-title">
+    <span>🌿</span> Pupu's Study Corner
+  </div>
+  <a href="analytics.html" class="nav-link">📊 My Stats →</a>
+</header>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<div class="main-container">
+
+  <!-- ── POMODORO CARD ── -->
+  <div class="card pomodoro-card">
+    <div class="doodle" style="top:12px; right:20px;">🌸</div>
+    <div class="doodle" style="bottom:16px; left:18px;">🍃</div>
+    <div class="doodle" style="top:60px; right:14px; font-size:16px;">✨</div>
+    <div class="card-title">🍅 Pomodoro Timer</div>
+
+    <!-- Mode tabs -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" onclick="setMode('pomodoro', this)">Focus</button>
+      <button class="mode-tab" onclick="setMode('short', this)">Short Break</button>
+      <button class="mode-tab" onclick="setMode('long', this)">Long Break</button>
+    </div>
+
+    <!-- Timer circle -->
+    <div class="timer-wrapper">
+      <svg class="timer-svg" viewBox="0 0 220 220">
+        <circle class="timer-track" cx="110" cy="110" r="104"/>
+        <circle class="timer-progress" id="timerProgress" cx="110" cy="110" r="104"/>
+      </svg>
+      <div class="timer-center">
+        <div class="timer-mascot" id="timerMascot">🐾</div>
+        <div class="timer-display" id="timerDisplay">25:00</div>
+        <div class="timer-label" id="timerLbl">focus time</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="timer-controls">
+      <button class="btn-secondary" onclick="resetTimer()">↺ Reset</button>
+      <button class="btn-primary" id="startBtn" onclick="toggleTimer()">▶ Start</button>
+      <button class="btn-secondary" onclick="skipSession()">⏭ Skip</button>
+    </div>
+
+    <!-- Session dots -->
+    <div class="session-dots" id="sessionDots"></div>
+
+    <!-- Settings -->
+    <div class="pomo-settings">
+      <div class="pomo-set-item">
+        <div class="pomo-set-label">Focus</div>
+        <div class="pomo-set-controls">
+          <button class="pomo-set-btn" onclick="adjustTime('pomodoro',-1)">−</button>
+          <span class="pomo-set-val" id="pomoDurVal">25</span>
+          <button class="pomo-set-btn" onclick="adjustTime('pomodoro',1)">+</button>
+        </div>
+      </div>
+      <div class="pomo-set-item">
+        <div class="pomo-set-label">Short</div>
+        <div class="pomo-set-controls">
+          <button class="pomo-set-btn" onclick="adjustTime('short',-1)">−</button>
+          <span class="pomo-set-val" id="shortDurVal">5</span>
+          <button class="pomo-set-btn" onclick="adjustTime('short',1)">+</button>
+        </div>
+      </div>
+      <div class="pomo-set-item">
+        <div class="pomo-set-label">Long</div>
+        <div class="pomo-set-controls">
+          <button class="pomo-set-btn" onclick="adjustTime('long',-1)">−</button>
+          <span class="pomo-set-val" id="longDurVal">15</span>
+          <button class="pomo-set-btn" onclick="adjustTime('long',1)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TODO CARD ── -->
+  <div class="card todo-card">
+    <div class="doodle" style="top:10px; right:16px; font-size:18px;">🌼</div>
+    <div class="card-title">📋 To-Do List</div>
+
+    <div class="todo-input-row">
+      <input type="text" class="todo-input" id="todoInput" placeholder="add a little task… 🍀" maxlength="80"
+        onkeydown="if(event.key==='Enter')addTodo()">
+      <button class="add-btn" onclick="addTodo()">+</button>
+    </div>
+
+    <div class="todo-list" id="todoList">
+      <!-- pre-filled example tasks -->
+    </div>
+
+    <div class="todo-stats">
+      <span id="todoStats">0 / 0 done</span>
+      <button class="clear-done" onclick="clearDone()">clear done ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- MASCOT FOOTER -->
+<div class="mascot-strip">
+  <div class="mascots">🐾🌿🐾</div>
+  <div class="status-msg" id="statusMsg">Ready to focus! You can do it 🌸</div>
+  <div class="mascots">🌼🍃🌼</div>
+</div>
+
+<!-- ──────── JAVASCRIPT ──────── -->
+<script>
+// ── STATE ──
+const durations = { pomodoro: 25, short: 5, long: 15 };
+let mode = 'pomodoro';
+let totalSecs = 25 * 60;
+let remaining = totalSecs;
+let running = false;
+let ticker = null;
+let sessionCount = 0;
+let completedPomodoros = 0;
+const CIRCUMFERENCE = 2 * Math.PI * 104; // ≈ 653.5
+
+const mascots = { pomodoro: '🐾', short: '☕', long: '🛏️' };
+const colors  = { pomodoro: '#8aab7a', short: '#c8a87a', long: '#e87a6a' };
+const labels  = { pomodoro: 'focus time', short: 'short break', long: 'long break' };
+const msgs    = {
+  pomodoro: ['Time to focus! You've got this 🌿', 'Deep work mode 🔍', 'Block out the noise 🎧', 'Let's get it 🌸'],
+  short:    ['Take a breath 🍃', 'Stretch a little 🐾', 'Hydrate! 💧'],
+  long:     ['Big break! Go outside 🌤️', 'Rest your eyes 🌙', 'You've earned it 🎉'],
+};
+
+// ── STORAGE helpers ──
+function saveStats() {
+  const today = new Date().toISOString().split('T')[0];
+  let stats = JSON.parse(localStorage.getItem('pupu_stats') || '{}');
+  if (!stats[today]) stats[today] = 0;
+  stats[today] = completedPomodoros;
+  localStorage.setItem('pupu_stats', JSON.stringify(stats));
+}
+
+// ── TIMER ──
+function setMode(m, btn) {
+  if (running) return;
+  mode = m;
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  totalSecs = durations[m] * 60;
+  remaining = totalSecs;
+  document.getElementById('timerProgress').style.stroke = colors[m];
+  document.getElementById('timerMascot').textContent = mascots[m];
+  document.getElementById('timerLbl').textContent = labels[m];
+  updateDisplay();
+  updateProgress();
+}
+
+function toggleTimer() {
+  if (running) pauseTimer(); else startTimer();
+}
+
+function startTimer() {
+  running = true;
+  document.getElementById('startBtn').textContent = '⏸ Pause';
+  document.getElementById('startBtn').classList.add('paused');
+  setStatusMsg(msgs[mode][Math.floor(Math.random() * msgs[mode].length)]);
+  ticker = setInterval(() => {
+    remaining--;
+    updateDisplay();
+    updateProgress();
+    if (remaining <= 0) onComplete();
+  }, 1000);
+}
+
+function pauseTimer() {
+  running = false;
+  clearInterval(ticker);
+  document.getElementById('startBtn').textContent = '▶ Resume';
+  document.getElementById('startBtn').classList.remove('paused');
+  setStatusMsg('Paused… take a moment 🍃');
+}
+
+function resetTimer() {
+  running = false;
+  clearInterval(ticker);
+  remaining = durations[mode] * 60;
+  totalSecs = remaining;
+  document.getElementById('startBtn').textContent = '▶ Start';
+  document.getElementById('startBtn').classList.remove('paused');
+  updateDisplay();
+  updateProgress();
+  setStatusMsg('Ready to focus! You can do it 🌸');
+}
+
+function skipSession() {
+  clearInterval(ticker);
+  running = false;
+  onComplete(true);
+}
+
+function onComplete(skipped = false) {
+  clearInterval(ticker);
+  running = false;
+  document.getElementById('startBtn').textContent = '▶ Start';
+  document.getElementById('startBtn').classList.remove('paused');
+
+  if (mode === 'pomodoro' && !skipped) {
+    completedPomodoros++;
+    sessionCount++;
+    saveStats();
+    renderDots();
+    showToast('🎉 Focus session done! +1 Pomodoro');
+    setStatusMsg('Great job! Time for a break 🌸');
+    // auto switch to break
+    setTimeout(() => {
+      const nextMode = (sessionCount % 4 === 0) ? 'long' : 'short';
+      const tabs = document.querySelectorAll('.mode-tab');
+      const idx = nextMode === 'short' ? 1 : 2;
+      setMode(nextMode, tabs[idx]);
+    }, 1200);
+  } else if (mode !== 'pomodoro' && !skipped) {
+    showToast('☕ Break over! Back to work~');
+    const tabs = document.querySelectorAll('.mode-tab');
+    setTimeout(() => setMode('pomodoro', tabs[0]), 1200);
+  } else {
+    remaining = durations[mode] * 60;
+    updateDisplay();
+    updateProgress();
+  }
+}
+
+function updateDisplay() {
+  const m = String(Math.floor(remaining / 60)).padStart(2, '0');
+  const s = String(remaining % 60).padStart(2, '0');
+  document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+  document.title = `${m}:${s} – Pupu's Corner`;
+}
+
+function updateProgress() {
+  const pct = remaining / (durations[mode] * 60);
+  const offset = CIRCUMFERENCE * (1 - pct);
+  document.getElementById('timerProgress').style.strokeDashoffset = offset;
+}
+
+function adjustTime(m, delta) {
+  if (running) return;
+  durations[m] = Math.max(1, Math.min(99, durations[m] + delta));
+  document.getElementById(m === 'pomodoro' ? 'pomoDurVal' : m === 'short' ? 'shortDurVal' : 'longDurVal').textContent = durations[m];
+  if (m === mode) { totalSecs = durations[m] * 60; remaining = totalSecs; updateDisplay(); updateProgress(); }
+}
+
+function renderDots() {
+  const container = document.getElementById('sessionDots');
+  container.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    if (i < sessionCount % 4 || (sessionCount % 4 === 0 && sessionCount > 0 && i < 4)) {
+      d.classList.add(i === 3 ? 'long' : 'filled');
+    }
+    container.appendChild(d);
+  }
+}
+
+// ── TODO ──
+let todos = JSON.parse(localStorage.getItem('pupu_todos') || '[]');
+const defaultTodos = [
+  { id: Date.now()+1, text: '📖 Review notes', done: false },
+  { id: Date.now()+2, text: '✏️ Finish assignment', done: false },
+  { id: Date.now()+3, text: '💧 Drink water!', done: true },
+];
+if (todos.length === 0) { todos = defaultTodos; saveTodos(); }
+
+function saveTodos() { localStorage.setItem('pupu_todos', JSON.stringify(todos)); }
+
+function renderTodos() {
+  const list = document.getElementById('todoList');
+  list.innerHTML = '';
+  todos.forEach(todo => {
+    const item = document.createElement('div');
+    item.className = 'todo-item' + (todo.done ? ' done' : '');
+    item.innerHTML = `
+      <div class="todo-check" onclick="toggleTodo(${todo.id})"></div>
+      <span class="todo-text">${escHtml(todo.text)}</span>
+      <button class="todo-del" onclick="deleteTodo(${todo.id})">✕</button>`;
+    list.appendChild(item);
+  });
+  const done = todos.filter(t => t.done).length;
+  document.getElementById('todoStats').textContent = `${done} / ${todos.length} done`;
+}
+
+function addTodo() {
+  const input = document.getElementById('todoInput');
+  const text = input.value.trim();
+  if (!text) return;
+  todos.unshift({ id: Date.now(), text, done: false });
+  input.value = '';
+  saveTodos(); renderTodos();
+}
+
+function toggleTodo(id) {
+  const t = todos.find(t => t.id === id);
+  if (t) { t.done = !t.done; saveTodos(); renderTodos(); }
+}
+
+function deleteTodo(id) {
+  todos = todos.filter(t => t.id !== id);
+  saveTodos(); renderTodos();
+}
+
+function clearDone() {
+  todos = todos.filter(t => !t.done);
+  saveTodos(); renderTodos();
+}
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function setStatusMsg(msg) { document.getElementById('statusMsg').textContent = msg; }
+
+// ── INIT ──
+updateDisplay();
+updateProgress();
+renderDots();
+renderTodos();
+document.getElementById('timerProgress').style.stroke = colors[mode];
+document.getElementById('timerProgress').style.strokeDasharray = CIRCUMFERENCE;
+</script>
+</body>
+</html>
