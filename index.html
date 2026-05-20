@@ -166,7 +166,7 @@
     stroke: var(--sage);
     stroke-width: 10;
     stroke-linecap: round;
-    stroke-dasharray: 659;
+    stroke-dasharray: 653.5;
     stroke-dashoffset: 0;
     transition: stroke-dashoffset 1s linear, stroke 0.4s;
   }
@@ -552,16 +552,18 @@ let remaining = totalSecs;
 let running = false;
 let ticker = null;
 let sessionCount = 0;
-let completedPomodoros = 0;
-const CIRCUMFERENCE = 2 * Math.PI * 104; // ≈ 653.5
+const CIRCUMFERENCE = 2 * Math.PI * 104; // 653.45
+const _todayKey = new Date().toISOString().split('T')[0];
+const _savedStats = JSON.parse(localStorage.getItem('pupu_stats') || '{}');
+let completedPomodoros = _savedStats[_todayKey] || 0;
 
 const mascots = { pomodoro: '🐾', short: '☕', long: '🛏️' };
 const colors  = { pomodoro: '#8aab7a', short: '#c8a87a', long: '#e87a6a' };
 const labels  = { pomodoro: 'focus time', short: 'short break', long: 'long break' };
 const msgs    = {
-  pomodoro: ['Time to focus! You've got this 🌿', 'Deep work mode 🔍', 'Block out the noise 🎧', 'Let's get it 🌸'],
+  pomodoro: ['Time to focus! You got this 🌿', 'Deep work mode 🔍', 'Block out the noise 🎧', 'Let us get it 🌸'],
   short:    ['Take a breath 🍃', 'Stretch a little 🐾', 'Hydrate! 💧'],
-  long:     ['Big break! Go outside 🌤️', 'Rest your eyes 🌙', 'You've earned it 🎉'],
+  long:     ['Big break! Go outside 🌤️', 'Rest your eyes 🌙', 'You earned it 🎉'],
 };
 
 // ── STORAGE helpers ──
@@ -569,7 +571,7 @@ function saveStats() {
   const today = new Date().toISOString().split('T')[0];
   let stats = JSON.parse(localStorage.getItem('pupu_stats') || '{}');
   if (!stats[today]) stats[today] = 0;
-  stats[today] = completedPomodoros;
+  stats[today]++;
   localStorage.setItem('pupu_stats', JSON.stringify(stats));
 }
 
@@ -764,7 +766,6 @@ updateProgress();
 renderDots();
 renderTodos();
 document.getElementById('timerProgress').style.stroke = colors[mode];
-document.getElementById('timerProgress').style.strokeDasharray = CIRCUMFERENCE;
-</script>
+document.getElementById('timerProgress').style.strokeDasharray = CIRCUMFERENCE;</script>
 </body>
 </html>
